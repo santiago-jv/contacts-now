@@ -1,48 +1,45 @@
-import React from 'react'
-import ImageUploading from 'react-images-uploading';
-import { defaultProfile } from '../constants';
+import React, { useRef } from 'react'
+import { defaultProfile } from '../constants.js';
 import {
     UserProfile,
     ProfileImage,
     UploadContainer
-} from '../styles/ImageUpload'
+} from '../styles/ImageUpload.styles.js'
 import Button from './Button';
 
-const InputUserImage = ({profileImage, setProfileImage}) => {
 
-    const handleImage = (imageList)=>{
-        setProfileImage(imageList)
+const InputUserImage = ({profileImage, setProfileImage}) => {
+    const fileInput = useRef()
+    const handleImage = (event)=>{
+        const reader = new FileReader();
+        reader.onload = function(){
+          const dataURL = reader.result;
+          setProfileImage(dataURL)
+        };
+        reader.readAsDataURL(event.target.files[0]);
     }
 
-    return (
-        <ImageUploading value={profileImage} acceptType={['jpg', 'png','jpeg','svg']} onChange={handleImage} dataURLKey="data_url">
-            {({
-                imageList,
-                onImageUpload,
-                onImageRemoveAll,
-                onImageUpdate,
-                onImageRemove,
-                isDragging,
-                dragProps,
-            }) => (
-                <>  
-                   
-                    <UserProfile> 
+    const uploadImage = ()=>{
+        fileInput.current.click()
 
-                        { imageList.length > 0 ?imageList.map((image, index) => (
-                            <ProfileImage onClick={onImageUpload} {...dragProps} key={index} src={image.data_url}></ProfileImage>))    
-                        :
-                            <ProfileImage onClick={onImageUpload} {...dragProps} src={defaultProfile} /> 
-                        }
-                    
-                       <UploadContainer > 
-                           <Button action={onImageUpload} dragProps={dragProps}   text="upload or drag an image" icon="fas fa-file-upload"></Button>
-                       </UploadContainer>
-                    </UserProfile>
-                    
-                </>
-            )}
-        </ImageUploading>
+    }
+    const setDefaultImage = ()=>{
+        setProfileImage(defaultProfile)
+    }
+    return (
+      
+            <>  
+                <input accept="image/*" style={{display: 'none'}}   ref={fileInput} type="file"  onChange={handleImage}/>
+                <UserProfile>  
+                <ProfileImage onClick={uploadImage} src={profileImage} /> 
+                    <UploadContainer >
+                        <Button  margin={"1rem 0"} action={uploadImage}  text="upload" icon="fas fa-file-upload"></Button>
+                        {profileImage !== defaultProfile  && <Button action={setDefaultImage}  text="use default" icon="fas fa-undo"></Button>}
+                    </UploadContainer>
+                </UserProfile>
+                
+            </>
+   
     )
 }
 

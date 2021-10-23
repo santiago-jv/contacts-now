@@ -4,13 +4,14 @@ const ButtonElement = styled.button`
     display:flex;
     justify-content:center;
     align-items:center;
-    background:${props=>props.alternative?props.theme.alternativeButton:props.theme.mainColor};
-    transition:background 0.5s ease;
+    background:${props=>props.alternative?props.theme.alternativeButton: props.theme.mainColor };
+    transition:background 0.5s ease; 
     outline:none;
     border:none;
     padding:.4rem 2rem;
     border-radius:.3rem;
     cursor:pointer;
+    margin:${props=>props.margin?props.margin:""};
 `
 const Icon = styled.i`
     font-size:1.05rem;

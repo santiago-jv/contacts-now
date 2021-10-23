@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
     MainContent,
     ImageContainer,
@@ -12,11 +12,17 @@ import {
 import IMAGE from '../images/main.svg'
 import { useHistory } from 'react-router'
 import Button from '../components/Button'
+import { AppContext } from '../context/ContextProvider'
 const Home = () => {
     const history = useHistory()
-    
+    const {state} = useContext(AppContext)
     const goToLogin = () => {
-        history.push('/login')
+        if(state.user){
+            history.push('/contacts')
+        }
+        else{
+            history.push('/login')
+        }
     }
     return (
         <MainContent>

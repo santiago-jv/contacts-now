@@ -19,13 +19,15 @@ import { useHistory } from 'react-router'
 import {  register } from '../services/http-auth'
 import InputUserImage from '../components/InputUserImage'
 import { defaultProfile } from '../constants'
+import Loader from '../components/Loader';
 
 const initialState = {first_name:"",last_name:"",email:"",password:"",repeated_password:"", message:""}
 
 const Register = () => {
     const {dispatch} = useContext(AppContext)
     const history = useHistory()
-    const [profileImage, setProfileImage] = useState([defaultProfile])
+    const [loading, setLoading] = useState(false)
+    const [profileImage, setProfileImage] = useState(defaultProfile)
     const [credentials, setCredentials] = useState({first_name:"",last_name:"",email:"",password:"",repeated_password:""})
     const [errors, setErrors] = useState(initialState)
 
@@ -39,14 +41,12 @@ const Register = () => {
         return (credentials.password === credentials.repeated_password) && credentials.password !== "";
     }
     const registerCredentials = async (event) => {
+        setLoading(true)
         event.preventDefault();
-        console.log(validatePasswords());
-        console.log(profileImage[0].data_url);
         if(validatePasswords()){
             try {
                 const {first_name,last_name,email,password} = credentials
-                const response = await register({profile_image:profileImage[0].data_url,first_name,last_name,email,password});
-                console.log(response.data);
+                const response = await register({profile_image:profileImage,first_name,last_name,email,password});
                 dispatch({type: 'SAVE_SESSION', user: response.data.user})
                 sessionStorage.setItem('session', response.data.access_token);
                 toast.success(`Welcome ${response.data.user.first_name} ${response.data.user.last_name}`)
@@ -54,7 +54,6 @@ const Register = () => {
     
             } catch (error) {
                 if(error.response.status === 401){
-                    console.log(error.response.data.message);
                     setErrors({...errors,message:error.response.data.message})
                 }
                 else if (error.response.status === 400){
@@ -66,6 +65,8 @@ const Register = () => {
         else{
             setErrors({...errors,repeated_password:'The passwords must be equals' })
         }
+        setLoading(false)
+
     }
     return (
         <Container>
@@ -116,7 +117,8 @@ const Register = () => {
                     <ErrorMessage>{errors.repeated_password}</ErrorMessage>
                 </FormGroup>
                  <ErrorMessage>{errors.message}</ErrorMessage>
-               <Button icon="fas fa-cloud" isSubmitBtn={true} text="Sign up"/> 
+                 {loading && <Loader margin="1rem auto"/>}
+               <Button disabled={loading && true} icon="fas fa-cloud" isSubmitBtn={true} text="Sign up"/> 
                <LinkTo to="/login">Do you already have an account?</LinkTo>
             </Form> 
         </Container>
