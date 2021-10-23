@@ -18,10 +18,12 @@ import {
 import { AppContext } from '../context/ContextProvider'
 import { useHistory } from 'react-router'
 import { login } from '../services/http-auth'
+import Loader from '../components/Loader';
 
 const initialState = {email:"",password:"", message:""}
 
 const Login = () => {
+    const [loading, setLoading] = useState(false)
     const {dispatch} = useContext(AppContext)
     const history = useHistory()
     const [credentials, setCredentials] = useState({})
@@ -35,6 +37,7 @@ const Login = () => {
         })
     }
     const sendCredentials = async (event) => {
+        setLoading(true)
         event.preventDefault();
         try {
             const response = await login(credentials);
@@ -45,7 +48,6 @@ const Login = () => {
 
         } catch (error) {
             if(error.response.status === 401){
-                console.log(error.response.data.message);
                 setErrors({...errors,message:error.response.data.message})
             }
             else if (error.response.status === 400){
@@ -53,6 +55,7 @@ const Login = () => {
             }
           
         }
+        setLoading(false)
     }
     return (
         <Container>
@@ -75,7 +78,8 @@ const Login = () => {
                     <ErrorMessage>{errors.password.msg}</ErrorMessage>
                 </FormGroup>
                  <ErrorMessage>{errors.message}</ErrorMessage>
-               <Button icon="fas fa-sign-in-alt" isSubmitBtn={true} text="Log in"/>
+                 {loading && <Loader margin="1rem auto"/>}
+               <Button disabled={loading && true} icon="fas fa-sign-in-alt" isSubmitBtn={true} text="Log in"/>
                <LinkTo to="/register">You do not have an account?</LinkTo> 
             </Form> 
         </Container>

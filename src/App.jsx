@@ -1,5 +1,3 @@
-import './App.css';
-
 import React from 'react';
 import ContextProvider from './context/ContextProvider';
 import { ThemeProvider } from 'styled-components';
