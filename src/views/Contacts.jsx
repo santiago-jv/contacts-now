@@ -26,7 +26,8 @@ const Contacts = () => {
 
             } catch (error) {
                 console.log(error);
-                toast.error("Failed to connect to server")
+                toast.error("Failed to connect the server")
+       
             }
             setLoading(false)
         }

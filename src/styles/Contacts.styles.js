@@ -74,7 +74,7 @@ const CardActions = styled.div`
 `
 const IconButton = styled.i`
     cursor:pointer;
-    font-size:1.4rem;
+    font-size:${props=>props.size?props.size :"1.2rem"};
     width:50px;
     height:50px;
     display: flex;
