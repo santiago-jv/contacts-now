@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { PhoneNumberUtil } from 'google-libphonenumber';
 import { useHistory, withRouter } from 'react-router'
 import { 
     Container,
@@ -27,6 +28,7 @@ const FormContact = (props) => {
     const {id} = props.match.params
     const [profileImage, setProfileImage] = useState(defaultProfile)
     const [loadingContact, setLoadingContact] = useState(false)
+    const phoneUtil = new PhoneNumberUtil.getInstance()
     const [loadingPost, setLoadingPost] = useState(false)
     const history = useHistory()
     const [contact, setContact] = useState({first_name:"",last_name:"",phone_number:"",})
@@ -62,26 +64,38 @@ const FormContact = (props) => {
             [event.target.name]: event.target.value
         })
     } 
+    const verifyPhoneNumber =()=>{
+        try {
+            
+           return phoneUtil.isValidNumber(phoneUtil.parse(contact.phone_number))
+        } catch (error) {}
+    }
     const sendContact = async (event) => {
         setLoadingPost(true)
         event.preventDefault();
-        try {
-            if(!id){
-                const response = await createContact({ ...contact, profile_image:profileImage})
-                toast.success(`Contact ${response.data.contact.first_name} ${response.data.contact.last_name} created successfully.`)
-            }
-            else{
-                const response = await updateContact(id,{ ...contact,profile_image:profileImage})
-                toast.success(`Contact ${response.data.contact.first_name} ${response.data.contact.last_name} updated successfully.`)
-            }
-            history.push('/contacts')
+        if(verifyPhoneNumber()){
 
-        } catch (error) {
-           
-            setErrors({...errors,...error.response.data.errors})
-          
+            try {
+                if(!id){
+                    const response = await createContact({ ...contact, profile_image:profileImage})
+                    toast.success(`Contact ${response.data.contact.first_name} ${response.data.contact.last_name} created successfully.`)
+                }
+                else{
+                    const response = await updateContact(id,{ ...contact,profile_image:profileImage})
+                    toast.success(`Contact ${response.data.contact.first_name} ${response.data.contact.last_name} updated successfully.`)
+                }
+                history.push('/contacts')
+
+            } catch (error) {
+                setErrors({...errors,...error.response.data.errors})
+            
+            }
+        }
+        else{
+            setErrors({...errors, phone_number:"The text supplied should be a valid phone number."})
         }
         setLoadingPost(false)
+       
     }
     const back = ()=>{
         history.push('/contacts')
@@ -98,7 +112,7 @@ const FormContact = (props) => {
                 <Form onSubmit={sendContact}>
                     <FormGroup> 
                         <InputUserImage profileImage={profileImage} setProfileImage={setProfileImage}/>
-                </FormGroup>
+                    </FormGroup>
                     <FormGroup>
                         <Label htmlFor="first_name">First Name</Label>
                         <FieldContainer>
@@ -119,9 +133,9 @@ const FormContact = (props) => {
                         <Label htmlFor="phone_number">Phone Number</Label>
                         <FieldContainer>
                             <IconField className="fas fa-phone-alt"></IconField>
-                            <Field value={contact.phone_number} onChange={handleInputs} id="phone_number" name="phone_number" type="text"/>
+                            <Field placeholder="Ex: +573002001100"value={contact.phone_number} onChange={handleInputs} id="phone_number" name="phone_number" type="text"/>
                         </FieldContainer>
-                        <ErrorMessage>{errors.phone_number.msg}</ErrorMessage>
+                        <ErrorMessage>{errors.phone_number}</ErrorMessage>
                     </FormGroup>
                     <ErrorMessage>{errors.message}</ErrorMessage>
                     {loadingPost && <Loader margin="1rem auto"/>}

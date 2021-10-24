@@ -90,6 +90,7 @@ const IconField = styled.i`
 const ErrorMessage = styled.p`
     color:#e03636;
     margin-bottom:1rem;
+    margin-top:.5rem;
     font-size:1.1rem;
 `
 const LinkTo = styled(LINK)`

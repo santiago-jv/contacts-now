@@ -18,7 +18,7 @@ const LoaderContainer = styled.div`
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border-left-color: #09f;
+    border-left-color: ${props=>props.theme.mainColor};
     animation: ${spinAnimation} 1s ease infinite;
 `
 export {
