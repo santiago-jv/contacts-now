@@ -18,12 +18,14 @@ const Icon = styled.i`
     margin:0;
     margin-right:1rem;
     color:${props=>props.alternative?props.theme.alternativeText:"#fff"};
+    transition:color .5s ease;
 `
 const Text = styled.p`
     font-size:1.05rem;
     font-weight:bold;
     margin:0;
     color:${props=>props.alternative?props.theme.alternativeText:"#fff"};
+    transition:color .5s ease;
 `
 
 const Title = styled.h1`
@@ -31,6 +33,7 @@ const Title = styled.h1`
     font-weight:bold;
     margin:0;
     color:${props=>props.theme.textPrimaryColor};
+    transition:color .5s ease;
 `
 const Container = styled.div`
    margin:auto;
@@ -44,9 +47,8 @@ const Container = styled.div`
    transition:background .5s ease;
    
 `
-const Form = styled.form`
-   
-`
+const Form = styled.form``
+
 const FormGroup = styled.div`
     margin:1rem auto;
 `

@@ -110,14 +110,14 @@ const Image = styled.img`
   width:120px;
   height:120px;
   object-fit:cover;
-  border-radius:50%;
-  border:2px solid #fff;    
+  border-radius:50%; 
+  border:3px solid #fff;
 `
 const UserInfo = styled.div` 
     
 `
 const Text = styled.p` 
-    font-size:1.5rem;
+    font-size:1.3rem;
     text-align:center;
     font-weight:bold;
     color:#fff;

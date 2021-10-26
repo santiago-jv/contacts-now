@@ -24,7 +24,7 @@ const ContactsContainer = styled.section`
 `
 
 const ContactCard = styled.article`
-    background:${props=>props.theme.cardBackground};
+    background:${props=>props.theme.bgSecondaryColor};
     width:95%;
     max-width:350px;
     border-radius:.4rem;

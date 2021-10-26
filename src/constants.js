@@ -9,14 +9,13 @@ const light = {
     bgSecondaryColor:"#fff",
     mainColor:"#0055ff",
     textPrimaryColor:"#141414",
-    textSecondaryColor:"#292929",
     textAuxiliarColor:"#e0ebff",
     headerColor:"#0055ff",
     textHeaderColor:"#0055ff",
     alternativeButton:"#fff",
     alternativeText:"#0055ff",
     shadow:"0 8px 20px rgba(0,0,0,0.12)",
-    cardBackground:"#fff",
+    borderColor:"#11151d",
     errorColor:"#fa0f0f"
 
 }
@@ -30,8 +29,9 @@ const dark = {
     textHeaderColor:"##e0ebff",
     alternativeButton:"#1f69ff",
     alternativeText:"#fff",
+    borderColor:"#e0ebff",
     shadow:"0 8px 20px rgba(0,0,0,0.12)",
-    cardBackground:"#212938",
+    
     errorColor:"#fc3535"
 }
 

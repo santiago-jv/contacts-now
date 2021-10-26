@@ -27,7 +27,8 @@ const ProfileImage = styled.img`
     cursor:pointer;
     border-radius:50%;
     object-fit:cover;
-    border:2px solid #fff;
+    border:3px solid ${props => props.theme.borderColor};
+    transition:border .5s ease;
     
 `
 export {
